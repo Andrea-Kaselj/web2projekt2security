@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {             
+        "esModuleInterop": true,
+        "outDir": "./dist",
+        "rootDir": "./src",        
+        "declaration": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noEmitOnError": true,
+        "lib": [
+          "ES2021.String"
+        ]
+    }
+}

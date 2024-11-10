@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users data</title>
+</head>
+<body>
+    <h3><%= text %></h3>
+    <table style="width:500px;">
+        <thead> 
+            <tr>
+                <th style="text-align:start;">Korisnik</th>
+                <% if (secure != "1") { %>
+                    <th style="text-align:start;">Lozinka</th>
+                <% } %>
+                <th style="text-align:start;">Broj kartice</th>
+            </tr> 
+        </thead>
+        <tbody>
+            <% for (var i=0; i<data.length; i++) { %>
+                <tr>
+                    <td><%= data[i]["username"] %></td>
+                    <% if (secure != "1") { %>
+                        <td><%= data[i]["password"] %></td>
+                    <% } %>
+                    <td><%= data[i]["cardnumber"] %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>

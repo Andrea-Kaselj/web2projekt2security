@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Malicious site</title>
+</head>
+<body>
+    <p>Malicious site</p>
+    <p>THANK YOU FOR THE COOKIE</p>
+    <p><%= cookie %></p>
+</body>
+<script>
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function goBack() {
+        await sleep(5000);
+        document.location.href= '/';
+    }
+    goBack();  
+</script>
+</html>

