@@ -105,7 +105,7 @@ if (externalUrl) { const hostname = '0.0.0.0';
 const pool = new Pool(
     { user: process.env.DB_USER, 
         host: process.env.DB_HOST, 
-        database: 'web2_project1_tickets_database', 
+        database: 'web2_project1_tickets_database2', 
         password: process.env.DB_PASSWORD, 
         port: 5432, 
         ssl : true 
